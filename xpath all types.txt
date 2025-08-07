@@ -1,0 +1,87 @@
+Types of XPath Locators:
+
+Absolute XPath:
+
+Description: Starts from the root node (html) and follows the entire path down to the desired element. It begins with a single slash (/).
+Pros: Very specific path.
+Cons: Extremely brittle. Any small change in the HTML structure (like adding a div) will break the XPath. Generally discouraged.
+Syntax: /tagname/tagname/.../tagname
+Example: /html/body/div/form/div[1]/input (Selects the username input)
+Relative XPath:
+
+Description: Starts from anywhere in the document by referencing an element you choose directly or relative to another element. It begins with a double slash (//).
+Pros: More flexible and resistant to changes in the HTML structure elsewhere on the page. Generally preferred.
+Syntax: //tagname[@attribute='value']
+Example: //input[@id='username'] (Selects the input element with id 'username' anywhere on the page)
+Using Tag Name:
+
+Description: Selects all elements with the specified tag name.
+Syntax: //tagname
+Example: //input (Selects all <input> elements)
+Example: //label (Selects all <label> elements)
+Using Attributes:
+
+Description: Selects elements based on their attribute values (like id, class, name, type, etc.).
+Syntax: //tagname[@attribute='value']
+Example (by id): //input[@id='password'] (Selects the input with id 'password')
+Example (by name): //input[@name='user_name'] (Selects the input with name 'user_name')
+Example (by class): //button[@class='btn btn-primary'] (Selects the button with class 'btn btn-primary'. Note: Exact match needed for multiple classes unless using contains())
+Example (by any attribute): //input[@checked] (Selects the input element that has the checked attribute, regardless of its value)
+Using text() Function:
+
+Description: Selects elements based on their exact text content.
+Syntax: //tagname[text()='exact text content']
+Example: //label[text()='Username:'] (Selects the label with the exact text "Username:")
+Example: //button[text()='Log In'] (Selects the button with the exact text "Log In")
+Using contains() Function:
+
+Description: Selects elements where an attribute value or the text content contains a specified substring. Useful for dynamic attributes or partial text matches.
+Syntax (Attribute): //tagname[contains(@attribute,'partial_value')]
+Syntax (Text): //tagname[contains(text(),'partial_text')]
+Example (Attribute): //input[contains(@id,'user')] (Selects inputs whose id contains 'user', matches 'username')
+Example (Attribute - Class): //button[contains(@class,'btn-primary')] (Selects button if 'btn-primary' is one of its classes or part of a single class name)
+Example (Text): //h1[contains(text(),'Guest')] (Selects the h1 if its text contains "Guest")
+Example (Text): //a[contains(text(),'Forgot')] (Selects the link whose text contains "Forgot")
+Using starts-with() Function:
+
+Description: Selects elements where an attribute value or the text content starts with a specified substring. Useful for IDs or text that have a fixed prefix but dynamic suffix.
+Syntax (Attribute): //tagname[starts-with(@attribute,'prefix_value')]
+Syntax (Text): //tagname[starts-with(text(),'prefix_text')]
+Example (Attribute): //input[starts-with(@name,'user_')] (Selects inputs whose name starts with 'user_', matches 'user_name' and 'user_pass')
+Example (Text): //h1[starts-with(text(),'Welcome')] (Selects the h1 if its text starts with "Welcome")
+Using Logical Operators (and, or):
+
+Description: Combines multiple conditions to locate elements.
+Syntax (and): //tagname[@attribute1='value1' and @attribute2='value2']
+Syntax (or): //tagname[@attribute1='value1' or @attribute2='value2']
+Example (and): //input[@type='password' and @name='user_pass'] (Selects the input that is type 'password' AND has name 'user_pass')
+Example (or): //input[@id='username' or @name='user_name'] (Selects the input that has id 'username' OR name 'user_name')
+Example (Combined): //input[contains(@class,'input-field') and @type='text'] (Selects inputs with class containing 'input-field' AND type 'text')
+Using Index (position() or []):
+
+Description: Selects an element based on its position (1-based index) among its siblings. Often used when multiple elements match a non-indexed XPath. Can be brittle if the order changes.
+Syntax: (//xpath_expression)[index] or //xpath_expression[index] or //xpath_expression[position()=index]
+Example: (//input[@type='text'])[1] (Selects the first input element of type 'text' found in the document matching the //input[@type='text'] expression)
+Example: //form/div[2] (Selects the second div element that is a direct child of the form)
+Example: //ul/li[3] (Selects the third li element under the ul)
+Example: //ul/li[last()] (Selects the last li element under the ul)
+Using XPath Axes:
+
+Description: Axes define the relationship between the current (context) node and the target node. They allow navigation in various directions (parent, child, sibling, ancestor, descendant).
+Syntax: //context_node_xpath/axis::tagname[@attribute='value']
+child::: Selects direct children of the context node. (Often omitted: //div/a is short for //div/child::a)
+Example: //div[@class='form-group']/child::input (Selects input elements that are direct children of divs with class 'form-group')
+parent::: Selects the direct parent of the context node.
+Example: //input[@id='username']/parent::div (Selects the parent div of the input with id 'username')
+following-sibling::: Selects all siblings after the context node.
+Example: //label[@for='password']/following-sibling::input[@type='password'] (Selects the password input that comes after its label)
+preceding-sibling::: Selects all siblings before the context node.
+Example: //input[@id='password']/preceding-sibling::label (Selects the label that comes before the password input)
+ancestor::: Selects all ancestors (parent, grandparent, etc.) of the context node.
+Example: //button[@id='loginButton']/ancestor::form (Selects the form ancestor of the login button)
+descendant::: Selects all descendants (children, grandchildren, etc.) of the context node. (// is often used as a shortcut for /descendant-or-self::node()/)
+Example: //form[@id='loginForm']/descendant::input (Selects all input elements anywhere underneath the login form. Equivalent to //form[@id='loginForm']//input)
+following::: Selects everything in the document after the closing tag of the context node (excluding descendants).
+Example: //form[@id='loginForm']/following::div (Selects all divs that appear after the entire form)
+preceding::: Selects everything in the document before the opening tag of the context node (excluding ancestors).
+Example: //div[@id='results']/preceding::h1 (Selects the h1 that appears before the results div)
